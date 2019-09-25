@@ -79,8 +79,8 @@ function cloneRepo(stud_repo) {
         await fs.promises.mkdir('../' + repo_name, { recursive: true }).catch(error => console.log(error));
         process.chdir(temp)
         console.log("current dir", process.cwd());
-        let user_name = 'attainu-mentor-au4';
-        let pass = 'dNAr837Q';
+        let user_name = 'username';
+        let pass = 'password';
         let repo = `github.com/attainu/${repo_name}`;
         await repo_Clone(temp, user_name, pass, repo)
     });
