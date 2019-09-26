@@ -12,7 +12,7 @@ const open = require('open');
 //opening the repo in the browser for merging 
 let githubRepo = () => {
 
-    //change according to yours
+    //change according to yours repo just need to change /avinash-bhuyan-au4/ this part else same
     var repo_url = [
         'https://github.com/attainu/avinash-bhuyan-au4/tree/dev',
 
@@ -54,6 +54,7 @@ async function status(workingDir) {
     }
     catch (e) {
         // handle the error
+        console.log(e);
     }
 
     return statusSummary;
@@ -79,8 +80,8 @@ function cloneRepo(stud_repo) {
         await fs.promises.mkdir('../' + repo_name, { recursive: true }).catch(error => console.log(error));
         process.chdir(temp)
         console.log("current dir", process.cwd());
-        let user_name = 'username';
-        let pass = 'password';
+        let user_name = 'repo_username_mentor';
+        let pass = 'repo_password';
         let repo = `github.com/attainu/${repo_name}`;
         await repo_Clone(temp, user_name, pass, repo)
     });
@@ -91,16 +92,17 @@ function cloneRepo(stud_repo) {
 
 function pullFromRepo(stud_repo) {
     for (let i = 0; i < stud_repo.length; i++) {
-        var temp = path.join(__dirname, '../' + (stud_repo[i] + '/' + stud_repo[i]));
+        var temp = path.join(__dirname, '../' + stud_repo[i] + '/' + stud_repo[i]);
         status(temp).then(status => {
-            //console.log(status)
+            //console.log(statuif(s)
             // cmd.run(``);
-            let work_file = status.files;
-            work_file.forEach(async file => {
 
-                let folder = file.split("/")[0];
-                console.log("file is", file);
-                if (folder == 'assignments') {
+            if (status) {
+                let work_file = status.files;
+                work_file.forEach(async file => {
+
+                    let folder = file.split("/")[0];
+                    console.log("file is", file);
 
                     let file_type = file.split(".")[file.split(".").length - 1];
                     console.log("file-type is ", file_type);
@@ -111,24 +113,25 @@ function pullFromRepo(stud_repo) {
                         await open(`${temp}/${file}`, { app: 'firefox' });
 
                     }
-                }
-                if (folder == 'coding-challenges') {
 
-                    let file_type = file.split(".")[file.split(".").length - 1];
                     // console.log("file-type is ", file_type);
                     if (file_type.toLowerCase() === 'js') {
 
                         var filename = file.split("/")[file.split("/").length - 1];
-                        // console.log("files is", file);
+                        console.log("JS files is", file);
 
+                        file = stud_repo[i] + '/' + stud_repo[i] + '/' + file;
 
                         //we can run javascript code by putting that file inside automate(curr folder index.js) and rename thefile as repo and use that name here for running that file
-                        cmd.run('node temp.js')
+                        console.log("------------------");
+                        console.log("repo name ", stud_repo[i]);
+                        await cmd.run(`node ${file}`);
+                        console.log("------------------");
                     }
 
-                }
 
-            })
+                })
+            }
         });
     }
     githubRepo();
@@ -140,11 +143,13 @@ try {
     //change according to yours
     let stud_repo = ['avinash-bhuyan-au4', 'bipul-yadav-au4', 'divya-chhabra-au4', 'aayush-jain-au4', 'faruk-munshi-au4', 'gaurav-singh-au4', 'rajeev-ranjan-au4', 'Rishu-raj-au4', 'varun-inapakurthi-au4', 'vivek-pa-au4'];
 
+    // let stud_repo = ['avinash-bhuyan-au4'];
     //uncomment this when first time cloaning occours 
+
     //cloneRepo(stud_repo)
 
     //this is commented when cloaning occours
-    // pullFromRepo(stud_repo)
+    pullFromRepo(stud_repo)
 
 }
 catch (err) {
